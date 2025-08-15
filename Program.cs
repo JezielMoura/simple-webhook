@@ -9,8 +9,6 @@ builder.Services.ConfigureHttpJsonOptions(options =>
     options.SerializerOptions.TypeInfoResolverChain.Insert(0, AppJsonSerializerContext.Default);
 });
 
-builder.Services.AddOpenApi();
-
 var app = builder.Build();
 
 app.MapPost("/callbacks", async (HttpRequest request) =>
