@@ -1,0 +1,70 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: webhook
+  namespace: apps
+  labels:
+    app: webhook
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: webhook
+  template:
+    metadata:
+      labels:
+        app: webhook
+    spec:
+      containers:
+        - name: webhook
+          image: ghcr.io/nettdev/webhook:latest
+          imagePullPolicy: Always
+          ports:
+            - containerPort: 8080
+              name: http
+              protocol: TCP
+          resources:
+            requests:
+              cpu: 50m
+              memory: 100Mi
+            limits:
+              cpu: 500m
+              memory: 500Mi
+      imagePullSecrets:
+            - name: ghcr
+---
+
+apiVersion: v1
+kind: Service
+metadata:
+  name: webhook
+  namespace: apps
+spec:
+  ports:
+    - port: 8080
+      name: http
+      protocol: TCP
+      targetPort: http
+  selector:
+    app: webhook
+  sessionAffinity: None
+  type: ClusterIP
+---
+
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: webhook
+  namespace: apps
+spec:
+  rules:
+    - host: webhook.nett.dev
+      http:
+        paths:
+          - path: /
+            pathType: Prefix
+            backend:
+              service:
+                name:  webhook
+                port:
+                  number: 8080
