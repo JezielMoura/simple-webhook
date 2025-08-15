@@ -1,6 +1,4 @@
-@Webhook_HostAddress = http://localhost:5000
-
-POST {{Webhook_HostAddress}}/callbacks
+POST http://localhost:5000/callbacks
 Accept: application/json
 
 {

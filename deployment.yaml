@@ -17,7 +17,7 @@ spec:
     spec:
       containers:
         - name: webhook
-          image: ghcr.io/nettdev/webhook:latest
+          image: ghcr.io/jezielmoura/webhook:71799a0aee9d15037769ec8cbd520da50a595910
           imagePullPolicy: Always
           ports:
             - containerPort: 8080

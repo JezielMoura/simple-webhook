@@ -6,5 +6,9 @@
     <ImplicitUsings>enable</ImplicitUsings>
     <InvariantGlobalization>true</InvariantGlobalization>
   </PropertyGroup>
+
+  <ItemGroup>
+    <Using Include="System.Text" />
+  </ItemGroup>
   
 </Project>
