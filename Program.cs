@@ -1,13 +1,19 @@
+using System.Text.Json;
+
 var builder = WebApplication.CreateSlimBuilder(args);
 var callbacks = new List<Callback>();
 var app = builder.Build();
+
+JsonSerializerOptions jsonSerializerOptions = new() { WriteIndented = true };
 
 app.MapPost("/callbacks", async (HttpRequest request) =>
 {
     using var reader = new StreamReader(request.Body);
     var content = await reader.ReadToEndAsync();
+    using JsonDocument document = JsonDocument.Parse(content);
+    var formattedJson = JsonSerializer.Serialize(document.RootElement, jsonSerializerOptions);
     var ip = request.HttpContext.Connection.RemoteIpAddress?.ToString() ?? "127.0.0.1";
-    callbacks.Add(new(Guid.NewGuid(), content, ip, DateTime.UtcNow, false));
+    callbacks.Add(new(Guid.NewGuid(), formattedJson, ip, DateTime.UtcNow, false));
     return Results.Text("Ok");
 });
 
