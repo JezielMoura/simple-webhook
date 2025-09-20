@@ -1,9 +1,9 @@
 name: release
 on:
   pull_request:
-    branches: [ releases/* ]
+    branches: [ release/* ]
   push:
-    branches: [ releases/* ]
+    branches: [ release/* ]
 
 permissions:
   contents: read
