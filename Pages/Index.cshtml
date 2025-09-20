@@ -62,7 +62,7 @@
                             {
                                 <div class="list-group-item d-flex justify-content-between align-items-center">
                                     <div>
-                                        <code>@(Request.Scheme + "://" + Request.Host + "/webhook/" + webhook)</code>
+                                        <code>@("https://" + Request.Host + "/webhook/" + webhook)</code>
                                         <div class="small text-muted">Created webhook</div>
                                     </div>
                                     <div class="btn-group" role="group">
