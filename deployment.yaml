@@ -17,7 +17,7 @@ spec:
     spec:
       containers:
         - name: webhook
-          image: ghcr.io/jezielmoura/webhook:71799a0aee9d15037769ec8cbd520da50a595910
+          image: ghcr.io/jezielmoura/webhook:${GITHUB_SHA}
           imagePullPolicy: Always
           ports:
             - containerPort: 8080

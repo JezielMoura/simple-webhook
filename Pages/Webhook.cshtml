@@ -1,0 +1,146 @@
+@page "/webhook-view/{id}"
+@model Webhook.Pages.WebhookModel
+@{
+    ViewData["Title"] = "Webhook Requests";
+}
+
+<div class="container mt-4">
+    <div class="row mb-4">
+        <div class="col-12">
+            <div class="d-flex justify-content-between align-items-center">
+                <h2>Webhook Requests</h2>
+                <div class="btn-group" role="group">
+                    <a href="/" class="btn btn-secondary"><i class="bi bi-arrow-left"></i> Back</a>
+                    <form method="post" asp-page-handler="Clear" class="d-inline">
+                        <button type="submit" class="btn btn-warning" 
+                                onclick="return confirm('Are you sure you want to clear all requests?')">
+                            <i class="bi bi-trash"></i> Clear All
+                        </button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="row mb-4">
+        <div class="col-12">
+            <div class="card">
+                <div class="card-header bg-primary text-white">
+                    <h5 class="mb-0">Webhook URL</h5>
+                </div>
+                <div class="card-body">
+                    <div class="input-group">
+                        <input type="text" class="form-control" value="@Model.WebhookUrl" readonly id="webhookUrl">
+                        <button class="btn btn-outline-secondary" type="button" onclick="copyToClipboard()">
+                            <i class="bi bi-clipboard"></i> Copy
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-12">
+            @if (Model.Requests.Any())
+            {
+                <div class="accordion" id="requestsAccordion">
+                    @foreach (var request in Model.Requests)
+                    {
+                        <div class="accordion-item">
+                            <h2 class="accordion-header" id="heading-@request.Id">
+                                <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" 
+                                        data-bs-target="#collapse-@request.Id" aria-expanded="false" 
+                                        aria-controls="collapse-@request.Id">
+                                    <div class="w-100">
+                                        <div class="d-flex justify-content-between align-items-center">
+                                            <div>
+                                                <span class="badge bg-primary me-2">@request.Method</span>
+                                                <strong>@request.Timestamp.ToString("yyyy-MM-dd HH:mm:ss") UTC</strong>
+                                            </div>
+                                            <div class="small text-muted">
+                                                @if (request.ContentType != null)
+                                                {
+                                                    @request.ContentType
+                                                }
+                                            </div>
+                                        </div>
+                                    </div>
+                                </button>
+                            </h2>
+                            <div id="collapse-@request.Id" class="accordion-collapse collapse" 
+                                 aria-labelledby="heading-@request.Id" data-bs-parent="#requestsAccordion">
+                                <div class="accordion-body">
+                                    <div class="row">
+                                        <div class="col-md-6">
+                                            <h6>General Info</h6>
+                                            <table class="table table-sm">
+                                                <tbody>
+                                                    <tr><td><strong>Method:</strong></td><td>@request.Method</td></tr>
+                                                    <tr><td><strong>Path:</strong></td><td><code>@request.Path</code></td></tr>
+                                                    <tr><td><strong>Query String:</strong></td><td><code>@request.QueryString</code></td></tr>
+                                                    <tr><td><strong>IP Address:</strong></td><td><code>@request.IpAddress</code></td></tr>
+                                                    <tr><td><strong>Content Type:</strong></td><td><code>@request.ContentType</code></td></tr>
+                                                </tbody>
+                                            </table>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <h6>Headers</h6>
+                                            <table class="table table-sm">
+                                                <tbody>
+                                                    @foreach (var header in Model.ParseHeaders(request.Headers))
+                                                    {
+                                                        <tr><td><strong>@header.Key:</strong></td><td><code>@header.Value</code></td></tr>
+                                                    }
+                                                </tbody>
+                                            </table>
+                                        </div>
+                                    </div>
+                                    @if (!string.IsNullOrEmpty(request.Body))
+                                    {
+                                        <div class="row mt-3">
+                                            <div class="col-12">
+                                                <h6>Body</h6>
+                                                <pre><code class="language-json">@Html.Raw(System.Text.Encodings.Web.HtmlEncoder.Default.Encode(request.Body))</code></pre>
+                                            </div>
+                                        </div>
+                                    }
+                                </div>
+                            </div>
+                        </div>
+                    }
+                </div>
+            }
+            else
+            {
+                <div class="alert alert-info text-center">
+                    <i class="bi bi-info-circle"></i> No requests received yet. Send a request to your webhook URL to see it here.
+                </div>
+            }
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <script>
+        function copyToClipboard() {
+            var copyText = document.getElementById("webhookUrl");
+            copyText.select();
+            copyText.setSelectionRange(0, 99999);
+            navigator.clipboard.writeText(copyText.value);
+            
+            var button = event.target.closest('button');
+            var originalText = button.innerHTML;
+            button.innerHTML = '<i class="bi bi-check"></i> Copied!';
+            setTimeout(() => {
+                button.innerHTML = originalText;
+            }, 2000);
+        }
+    </script>
+    <script src="https://cdn.jsdelivr.net/npm/prismjs@1.29.0/prism.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/prismjs@1.29.0/components/prism-json.min.js"></script>
+}
+
+@section Styles {
+    <link href="https://cdn.jsdelivr.net/npm/prismjs@1.29.0/themes/prism.min.css" rel="stylesheet" />
+}
