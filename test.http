@@ -1,0 +1,82 @@
+POST http://localhost:5000/webhook/6d9643ea41704fe28d9368e00e1f8c95 HTTP/1.1
+Content-Type: application/json
+
+{
+  "user": {
+    "id": 12345,
+    "username": "johndoe",
+    "email": "john.doe@example.com",
+    "profile": {
+      "firstName": "John",
+      "lastName": "Doe",
+      "age": 28,
+      "avatar": "https://example.com/avatars/12345.jpg",
+      "bio": "Software developer passionate about technology and innovation"
+    },
+    "preferences": {
+      "theme": "dark",
+      "language": "en-US",
+      "notifications": {
+        "email": true,
+        "push": false,
+        "sms": true
+      }
+    }
+  },
+  "data": {
+    "orders": [
+      {
+        "orderId": "ORD-2024-001",
+        "date": "2024-01-15T10:30:00Z",
+        "status": "completed",
+        "total": 99.99,
+        "items": [
+          {
+            "productId": "PROD-001",
+            "name": "Wireless Headphones",
+            "quantity": 1,
+            "price": 79.99
+          },
+          {
+            "productId": "PROD-002",
+            "name": "USB-C Cable",
+            "quantity": 2,
+            "price": 10.00
+          }
+        ]
+      },
+      {
+        "orderId": "ORD-2024-002",
+        "date": "2024-01-20T14:15:00Z",
+        "status": "processing",
+        "total": 149.50,
+        "items": [
+          {
+            "productId": "PROD-003",
+            "name": "Smartphone Case",
+            "quantity": 1,
+            "price": 24.99
+          },
+          {
+            "productId": "PROD-004",
+            "name": "Screen Protector",
+            "quantity": 3,
+            "price": 15.00
+          }
+        ]
+      }
+    ],
+    "analytics": {
+      "lastLogin": "2024-01-25T08:45:00Z",
+      "totalSpent": 249.49,
+      "averageOrderValue": 124.75,
+      "favoriteCategory": "Electronics"
+    }
+  },
+  "metadata": {
+    "timestamp": "2024-01-25T12:00:00Z",
+    "version": "1.0.0",
+    "source": "user-api",
+    "environment": "production"
+  }
+}
