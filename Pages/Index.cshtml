@@ -31,7 +31,7 @@
                     <div class="card-body">
                         <div class="input-group">
                             <input type="text" class="form-control"
-                                   value="@(Request.Scheme + "://" + Request.Host + "/webhook/" + Model.WebhookId)"
+                                   value="@("https://" + Request.Host + "/webhook/" + Model.WebhookId)"
                                    readonly id="webhookUrl">
                             <button class="btn btn-outline-secondary" type="button" onclick="copyToClipboard()">
                                 <i class="bi bi-clipboard"></i> Copy
