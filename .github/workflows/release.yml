@@ -51,6 +51,12 @@ jobs:
         context: .
         push: true
 
+    - name: Set up Kubectl
+      uses: azure/k8s-set-context@v4
+      with:
+        method: kubeconfig
+        kubeconfig: ${{ secrets.KUBECONFIG }}
+
     - name: set image sha
       run: envsubst < deployment.yaml > deployment-updated.yaml
       env:
