@@ -8,5 +8,7 @@ namespace webhook.Services
         void LogRequest(string id, RequestLog log);
         List<RequestLog> GetRequests(string id);
         string GenerateId();
+        List<string> GetAllIds();
+        void InitializeId(string id);
     }
 }

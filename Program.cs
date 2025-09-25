@@ -43,7 +43,7 @@ app.MapMethods("/hook/{id}", new[] { "GET", "POST", "PUT", "DELETE", "PATCH" }, 
         Body = body,
         Timestamp = DateTime.UtcNow,
         IpAddress = context.Connection.RemoteIpAddress?.ToString() ?? "unknown",
-        Headers = context.Request.Headers.ToDictionary(h => h.Key, h => string.Join(", ", h.Value.Select(v => (string)v)))
+        Headers = context.Request.Headers.ToDictionary(h => h.Key, h => string.Join(", ", h.Value.Select(v => v?.ToString() ?? "null")))
     };
 
     storage.LogRequest(id, log);

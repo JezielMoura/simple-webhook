@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
+using System.Linq;
 using System.Text;
 using webhook.Models;
 using webhook.Services;
@@ -17,7 +18,10 @@ namespace webhook.Services
             {
                 _storage[id] = new List<RequestLog>();
             }
-            _storage[id].Add(log);
+            if (log != null)
+            {
+                _storage[id].Add(log);
+            }
         }
 
         public List<RequestLog> GetRequests(string id)
@@ -35,6 +39,19 @@ namespace webhook.Services
                 id.Append(chars[random.Next(chars.Length)]);
             }
             return id.ToString();
+        }
+
+        public List<string> GetAllIds()
+        {
+            return _storage.Keys.ToList();
+        }
+
+        public void InitializeId(string id)
+        {
+            if (!_storage.ContainsKey(id))
+            {
+                _storage[id] = new List<RequestLog>();
+            }
         }
     }
 }

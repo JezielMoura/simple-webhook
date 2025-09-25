@@ -13,10 +13,17 @@ public class IndexModel : PageModel
         _storage = storage;
     }
 
-    public string? HookId { get; set; }
+    public List<string> HookIds { get; set; } = new();
 
     public void OnGet()
     {
-        HookId = _storage.GenerateId();
+        HookIds = _storage.GetAllIds();
+    }
+
+    public IActionResult OnPost()
+    {
+        var newId = _storage.GenerateId();
+        _storage.InitializeId(newId);
+        return RedirectToPage("/Index");
     }
 }
