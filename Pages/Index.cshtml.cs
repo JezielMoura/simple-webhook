@@ -1,39 +1,22 @@
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
-using Webhook.Services;
+using webhook.Services;
 
-namespace Webhook.Pages;
+namespace webhook.Pages;
 
 public class IndexModel : PageModel
 {
-    private readonly WebhookService _webhookService;
+    private readonly IWebHookStorage _storage;
 
-    public IndexModel(WebhookService webhookService)
+    public IndexModel(IWebHookStorage storage)
     {
-        _webhookService = webhookService;
+        _storage = storage;
     }
 
-    [BindProperty(SupportsGet = true)]
-    public string? WebhookId { get; set; }
+    public string? HookId { get; set; }
 
-    public string? NewWebhookUrl { get; set; }
-    public List<string> AllWebhooks { get; set; } = new();
-
-    public IActionResult OnGet()
+    public void OnGet()
     {
-        AllWebhooks = _webhookService.GetAllWebhookIds();
-        return Page();
-    }
-
-    public IActionResult OnPostCreateWebhook()
-    {
-        var webhookId = _webhookService.CreateWebhookUrl();
-        return RedirectToPage(new { webhookId = webhookId });
-    }
-
-    public IActionResult OnPostDeleteWebhook(string id)
-    {
-        _webhookService.DeleteWebhook(id);
-        return RedirectToPage();
+        HookId = _storage.GenerateId();
     }
 }
