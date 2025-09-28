@@ -1,0 +1,12 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <Import Project="../../build/Build.props" />
+  <Import Project="../../build/Build.targets" />
+  <Import Project="../../build/Packages.props" />
+
+  <PropertyGroup>
+    <RootNamespace>SimpleWebhook.Domain</RootNamespace>
+    <AssemblyName>SimpleWebhook.Domain</AssemblyName>
+  </PropertyGroup>
+
+</Project>
