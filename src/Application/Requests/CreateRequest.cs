@@ -23,7 +23,7 @@ public sealed class CreateRequestCommand(IHttpContextAccessor accessor, IRequest
             WebhookId = request.WebhookId,
             Method = httpRequest.Method,
             Headers = httpRequest.Headers.ToDictionary(x => x.Key, x => x.Value.ToString()),
-            Body = JsonSerializer.Serialize(json),
+            Body = JsonSerializer.Serialize(json, _jsonOptions),
             QueryParameters = string.Join(" | ", httpRequest.Query.Select(q => $"{q.Key}={q.Value}")),
             SourceIp = _accessor.HttpContext?.Connection.RemoteIpAddress?.ToString() ?? "Unknown",
             ReceivedAt = DateTime.UtcNow
