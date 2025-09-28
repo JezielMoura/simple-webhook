@@ -24,6 +24,13 @@ builder.Services.AddOpenApi(options =>
 
 var app = builder.Build();
 
+if (!app.Environment.IsDevelopment())
+{
+    app.UseDefaultFiles();
+    app.UseStaticFiles();
+    app.MapFallbackToFile("index.html");
+}
+
 app.MapOpenApi();
 app.MapScalarApiReference("/docs");
 
