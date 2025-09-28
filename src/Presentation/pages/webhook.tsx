@@ -39,7 +39,7 @@ export default function Home({ loaderData }: Route.ComponentProps) {
     <MainLayout>
       <Aside>
         <nav className="flex flex-col px-5">
-          { loaderData.requests.map((request, i) => (
+          { loaderData && loaderData.requests.map((request, i) => (
             <div key={i} className="shadow mb-4 px-4 py-2 rounded cursor-pointer" onClick={() => setSelected(request)}>
               <p>
                 <span style={{background: `${colors[request.method]}`}} className="px-2 py-1 rounded text-white text-sm">{request.method}</span>

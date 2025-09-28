@@ -1,15 +1,12 @@
 import { toast } from "helpers/toast";
 
 const createRequest = async (path: string, method: string, data: any = null) => {
-  const companyId = JSON.parse(localStorage.getItem('companyId') || `"empty"`);
-
   const response = await fetch(path, {
     method: method,
     body: data ? JSON.stringify(data) : null,
     headers: {
       'Content-Type': 'application/json',
-      'Authorization': `Bearer ${localStorage.getItem("token")}`,
-      'X-Company': `${companyId}`
+      'Authorization': `${localStorage.getItem("secret")}`,
     }
   });
 
@@ -22,7 +19,7 @@ const createRequest = async (path: string, method: string, data: any = null) => 
   }
 
   if (response.status == 400) {
-    Object.values((await response.json()).errors).flat().map((e:any) => toast(e, { type: 'warning' }));
+    toast((await response.json()).message, { type: 'error' });
   }
 
   if ([401, 403].includes(response.status)) {

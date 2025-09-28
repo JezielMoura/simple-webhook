@@ -1,7 +1,7 @@
 <Project>
 
   <ItemGroup>
-    <PackageReference Include="Nett.Core" Version="1.0.0" />
+    <PackageReference Include="Nett.Core" Version="1.0.3" />
   </ItemGroup>
 
   <ItemGroup Condition="$(MSBuildProjectName.EndsWith('Application')) or $(MSBuildProjectName.EndsWith('Infrastructure'))">

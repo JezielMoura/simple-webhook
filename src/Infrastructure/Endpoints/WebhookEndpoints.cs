@@ -1,3 +1,4 @@
+using Microsoft.AspNetCore.Http.HttpResults;
 using Microsoft.AspNetCore.Mvc;
 using SimpleWebhook.Application.Requests;
 using SimpleWebhook.Application.Webhooks;
@@ -16,11 +17,11 @@ public static class WebhookEndpoints
         route.MapGet("webhooks", async (ListWebhookQuery query) =>
             TypedResults.Ok(await query.Execute()));
 
-        route.MapGet("webhooks/{id:guid}", async (GetWebhookQuery query, Guid id, [FromHeader]string? secret) =>
-            TypedResults.Ok(await query.Execute(new GetWebhookRequest(id, secret))));
+        route.MapGet("webhooks/{id:guid}", async (GetWebhookQuery query, Guid id, [FromHeader(Name = "Authorization")]string? secret) =>
+            (await query.Execute(new GetWebhookRequest(id, secret))).Match<Results<Ok<GetWebhookResponse>, BadRequest<Error>>>(data => TypedResults.Ok(data), error => TypedResults.BadRequest(error)));
 
-        route.MapDelete("webhooks/{id:guid}", async (DeleteWebhookCommand command, Guid id) =>
-            TypedResults.Ok(await command.Execute(new DeleteWebhookRequest(id))));
+        route.MapDelete("webhooks/{id:guid}", async (DeleteWebhookCommand command, Guid id, [FromHeader(Name = "Authorization")]string? secret) =>
+            (await command.Execute(new DeleteWebhookRequest(id, secret))).Match<Results<Ok<bool>, BadRequest<Error>>>(data => TypedResults.Ok(data), error => TypedResults.BadRequest(error)));
             
         route.MapMethods("{id:guid}", httpMethods, async (CreateRequestCommand command, Guid id) =>
             TypedResults.Ok(await command.Execute(new CreateRequestRequest(id))));

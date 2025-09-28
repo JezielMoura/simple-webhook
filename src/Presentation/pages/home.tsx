@@ -3,7 +3,7 @@ import type { Route } from "./+types/home";
 import { http } from "services/http";
 import type { GetWebhookResponse, ListWebhookResponse } from "types/types";
 import MainLayout from "@components/ui/main-layout";
-import { Form, Link, redirect, useRevalidator } from "react-router";
+import { Link, useRevalidator } from "react-router";
 import { toast } from "@helpers/toast";
 
 export function meta({}: Route.MetaArgs) {
@@ -21,10 +21,14 @@ export default function Home({ loaderData }: Route.ComponentProps) {
   const revalidator = useRevalidator();
 
   const handleCreate = async () => {
-    const url = await http.post("/api/webhooks", {}) as string;
-    await navigator.clipboard.writeText(url);
-    toast("Webhook criado e url copiada para área de transferência", { type: "success" });
-    await revalidator.revalidate();
+    const secret = prompt("Put a secret or empty for public access", "");
+    const url = await http.post("/api/webhooks", { secret }) as string;
+    localStorage.setItem("secret", secret || "");
+    setTimeout(async () => {
+      await navigator.clipboard.writeText(url);
+      toast("Webhook criado e url copiada para área de transferência", { type: "success" });
+      await revalidator.revalidate();
+    }, 1000)
   }
 
   const handleCopy = async (url: string) => {
@@ -34,9 +38,11 @@ export default function Home({ loaderData }: Route.ComponentProps) {
 
   const handleDelete = async (webhook: GetWebhookResponse) => {
     if(confirm(`Deseja prosseguir com a exclusão do webhook ${webhook.url}`)) {
-      await http.del(`/api/webhooks/${webhook.id}`)
-      toast("Exlusão do webhook efetuada", { type: "success" })
-      await revalidator.revalidate();
+      const success = await http.del(`/api/webhooks/${webhook.id}`)
+      if (success) {
+        toast("Exlusão do webhook efetuada", { type: "success" })
+        await revalidator.revalidate();
+      }
     }
   }
 

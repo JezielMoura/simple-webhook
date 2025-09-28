@@ -11,13 +11,13 @@ public sealed class GetWebhookQuery(IWebhookRepository repository, IRequestRepos
     private readonly IWebhookRepository _repository = repository;
     private readonly IRequestRepository _requestRepository = requestRepository;
 
-    public async Task<GetWebhookResponse?> Execute(GetWebhookRequest request)
+    public async Task<Result<GetWebhookResponse, Error>> Execute(GetWebhookRequest request)
     {
         var webhook = await _repository.Find(request.Id);
 
         if (webhook is null || (webhook.Secret != request.Secret && !string.IsNullOrWhiteSpace(webhook.Secret)))
         {
-            return null;
+            return new Error() { Message = "Unauthorized" };
         }
 
         var requests = await _requestRepository.Find(webhook.Id);
