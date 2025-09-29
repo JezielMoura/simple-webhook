@@ -22,25 +22,27 @@ export default function Home({ loaderData }: Route.ComponentProps) {
 
   const handleCreate = async () => {
     const secret = prompt("Put a secret or empty for public access", "");
+
+    if (secret == null)
+      return;
+
     const url = await http.post("/api/webhooks", { secret }) as string;
     localStorage.setItem("secret", secret || "");
-    setTimeout(async () => {
-      await navigator.clipboard.writeText(url);
-      toast("Webhook criado e url copiada para área de transferência", { type: "success" });
-      await revalidator.revalidate();
-    }, 1000)
+    toast("Webhook created and url copied to clipboard", { type: "success" });
+    await revalidator.revalidate();
+    setTimeout(async () => await navigator.clipboard.writeText(url), 500)
   }
 
   const handleCopy = async (url: string) => {
     await navigator.clipboard.writeText(url);
-    toast("Webhook copiado para área de transferência", { type: "success" })
+    toast("Webhook copied to clipboard", { type: "success" })
   }
 
   const handleDelete = async (webhook: GetWebhookResponse) => {
-    if(confirm(`Deseja prosseguir com a exclusão do webhook ${webhook.url}`)) {
+    if(confirm(`Confirm delete webhook ${webhook.url}`)) {
       const success = await http.del(`/api/webhooks/${webhook.id}`)
       if (success) {
-        toast("Exlusão do webhook efetuada", { type: "success" })
+        toast("Webhook deleted", { type: "success" })
         await revalidator.revalidate();
       }
     }

@@ -22,7 +22,7 @@ const resources = {
 
 const styleContent = `
     .toast-container {
-        position: fixed; top: 10px; right: 20px; z-index: 9999; border-radius: 8px; width: 300px }
+        position: fixed; top: 10px; right: 0px; left: 0; margin: auto; z-index: 9999; border-radius: 8px; width: 300px }
 
         .toast-container .toast {
             display: grid; grid-template: 1fr 4px / 44px 1fr 30px; margin-top: 10px; border-radius: 8px; overflow: hidden;
