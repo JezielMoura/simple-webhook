@@ -1,0 +1,34 @@
+<Project>
+  <PropertyGroup>
+    <TargetFramework>net10.0</TargetFramework>
+    <Nullable>enable</Nullable>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Authors>Jeziel Moura</Authors>
+    <Company>Nett</Company>
+    <Product>MaragogiAI</Product>
+  </PropertyGroup>
+
+  <PropertyGroup Condition="!$(MSBuildProjectName.Contains('Tests'))">
+    <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
+    <ReportAnalyzer>true</ReportAnalyzer>
+    <RunAnalyzersDuringBuild>true</RunAnalyzersDuringBuild>
+    <RunAnalyzersDuringLiveAnalysis>true</RunAnalyzersDuringLiveAnalysis>
+    <AnalysisLevel>latest-Recommended</AnalysisLevel>
+    <EnforceCodeStyleInBuild>true</EnforceCodeStyleInBuild>
+    <CodeAnalysisTreatWarningsAsErrors>true</CodeAnalysisTreatWarningsAsErrors>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <Using Include="Nett.Core" />
+    <Using Include="Nett.Core.Domain" />
+    <Using Include="Nett.Core.Exceptions" />
+    <Using Include="Nett.Core.Extensions" />
+    <Using Include="Nett.Core.Models" />
+    <Using Include="Nett.Core.Persistence" />
+    <Using Include="Nett.Core.Result" />
+    <Using Include="Nett.Core.Specifications" />
+    <Using Include="System.Diagnostics.CodeAnalysis" />
+    <Using Include="System.Text.Json" />
+  </ItemGroup>
+  
+</Project>

@@ -1,0 +1,20 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <Import Project="../../build/Build.props" />
+  <Import Project="../../build/Build.targets" />
+  <Import Project="../../build/Packages.props" />
+
+  <PropertyGroup>
+    <RootNamespace>SimpleWebhook.Application</RootNamespace>
+    <AssemblyName>SimpleWebhook.Application</AssemblyName>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\Domain\Domain.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <FrameworkReference Include="Microsoft.AspNetCore.App" />
+  </ItemGroup>
+
+</Project>

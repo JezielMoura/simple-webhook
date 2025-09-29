@@ -2,22 +2,44 @@
     "version": "0.2.0",
     "configurations": [
         {
-            "name": "launch",
+            "name": "api",
             "type": "coreclr",
             "request": "launch",
-            "program": "${workspaceFolder}/bin/Debug/net10.0/Webhook.dll",
-            "args": [],
-            "cwd": "${workspaceFolder}",
-            "stopAtEntry": false,
+            "preLaunchTask": "build",
             "console": "integratedTerminal",
-            "serverReadyAction": {
-                "action": "openExternally",
-                "pattern": "\\bNow listening on:\\s+(https?://\\S+)"
-            },
+            "program": "${workspaceFolder}/src/Infrastructure/bin/Debug/net10.0/SimpleWebhook.Infrastructure.dll",
+            "args": [],
+            "cwd": "${workspaceFolder}/src/Infrastructure",
             "env": {
                 "ASPNETCORE_ENVIRONMENT": "Development",
-                "ASPNETCORE_URLS": "http://localhost:5000"
-            }
+                "ASPNETCORE_URLS": "https://localhost:5000"
+            },
+            "stopAtEntry": false
+        },
+        {
+            "name": "spa",
+            "type": "node",
+            "request": "launch",
+            "console": "integratedTerminal",
+            "cwd": "${workspaceRoot}/src/Presentation",
+            "runtimeArgs": [ "run-script", "dev" ],
+            "runtimeExecutable": "npm",
+            "serverReadyAction": {
+                "action": "debugWithChrome",
+                "webRoot": "${workspaceFolder}/src/Presentation",
+                "pattern": "Now listening",
+                "uriFormat": "https://localhost:3000",
+                "killOnServerStop": true
+            },
+            "skipFiles": ["<node_internals>/**"],
+            "sourceMaps": true
+        }
+    ],
+    "compounds": [
+        {
+          "name": "launch",
+          "configurations": ["api", "spa"],
+          "stopAll": true
         }
     ]
 }
