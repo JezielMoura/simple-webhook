@@ -48,7 +48,7 @@ export default function Home({ loaderData }: Route.ComponentProps) {
       <Aside>
         <nav className="flex flex-col px-5">
           { loaderData && loaderData.requests.length == 0 && (
-            <p className="text-center">Requests will be here</p>
+            <p className="text-center">Requests will appear here</p>
           )}
           { loaderData && loaderData.requests.map((request, i) => (
             <div key={i} className="shadow mb-4 px-4 py-2 rounded cursor-pointer" onClick={() => setSelected(request)}>

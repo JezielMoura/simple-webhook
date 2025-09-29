@@ -26,7 +26,7 @@ const styleContent = `
 
         .toast-container .toast {
             display: grid; grid-template: 1fr 4px / 44px 1fr 30px; margin-top: 10px; border-radius: 8px; overflow: hidden;
-            box-shadow: 0 2px 10px #ccc; animation: fadeInOut 300ms ease-in-out; background: var(--color-bg); color: var(--color-fg) }
+            box-shadow: 0 2px 10px var(--border); animation: fadeInOut 300ms ease-in-out; background: var(--color-bg); color: var(--color-fg) }
 
             .toast-container .toast img {
                 grid-column: 1 / 2; grid-row: 1 / 3; align-self: center; justify-self: center }

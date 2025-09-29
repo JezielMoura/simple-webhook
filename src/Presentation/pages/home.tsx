@@ -49,7 +49,7 @@ export default function Home({ loaderData }: Route.ComponentProps) {
   return (
     <MainLayout>
       <Aside>
-        <p className="p-4 text-center">Select your wehbook, requests will be here</p>
+        <p className="p-4 text-center">Select your webhook, requests will appear here</p>
       </Aside>
       <main className="flex flex-col px-5  max-[800px] col-start-1">
         <div className="flex justify-between py-5">
