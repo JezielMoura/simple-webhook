@@ -5,6 +5,8 @@ import type { Route } from "./+types/webhook";
 import { format } from "@helpers/formatter";
 import MainLayout from "@components/ui/main-layout";
 import { useState } from "react";
+import { useRevalidator } from "react-router";
+import { toast } from "@helpers/toast";
 
 export function meta({}: Route.MetaArgs) {
   return [
@@ -30,15 +32,24 @@ export default function Home({ loaderData }: Route.ComponentProps) {
   };
   const [selected, setSelected] = useState<RequestResponse|null>();
   const [headerDisplay, setHeaderDisplay] = useState<string>("none");
+  const revalidator = useRevalidator();
 
   const handleHeaderToggle = () => {
     setHeaderDisplay((prev) => prev == "none" ? "block" : "none")
+  }
+
+  const handleRefresh = () => {
+    revalidator.revalidate();
+    toast("Updated", { type: "success" })
   }
 
   return (
     <MainLayout>
       <Aside>
         <nav className="flex flex-col px-5">
+          { loaderData && loaderData.requests.length == 0 && (
+            <p className="text-center">Requests will be here</p>
+          )}
           { loaderData && loaderData.requests.map((request, i) => (
             <div key={i} className="shadow mb-4 px-4 py-2 rounded cursor-pointer" onClick={() => setSelected(request)}>
               <p>
@@ -51,6 +62,15 @@ export default function Home({ loaderData }: Route.ComponentProps) {
         </nav>
       </Aside>
       <main className="p-5">
+        <div className="flex justify-between py-5">
+          <h1>Request</h1>
+          <button onClick={handleRefresh} className="bg-[var(--primary)] text-white px-4 text-sm py-2 rounded cursor-pointer flex gap-2" type="submit">
+            <svg width="20px" height="20px" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <path d="M13 2L11 3.99545L11.0592 4.05474M11 18.0001L13 19.9108L12.9703 19.9417M11.0592 4.05474L13 6M11.0592 4.05474C11.3677 4.01859 11.6817 4 12 4C16.4183 4 20 7.58172 20 12C20 14.5264 18.8289 16.7793 17 18.2454M7 5.75463C5.17107 7.22075 4 9.47362 4 12C4 16.4183 7.58172 20 12 20C12.3284 20 12.6523 19.9802 12.9703 19.9417M11 22.0001L12.9703 19.9417" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
+            </svg>
+            <p>Refresh</p>
+            </button>
+        </div>
         { selected && (
           <div>
             <button type="button" className="flex justify-between w-full cursor-pointer bg-[var(--primary-bg)] text-[var(--primary-fg)] py-2 px-4 rounded" onClick={handleHeaderToggle}>

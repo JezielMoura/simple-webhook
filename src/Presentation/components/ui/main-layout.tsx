@@ -1,8 +1,9 @@
 import { theme } from "helpers/theme";
 import Header from "./header";
-import type { PropsWithChildren } from "react";
+import { useEffect, type PropsWithChildren } from "react";
 
 export default function MainLayout({ children }: PropsWithChildren) {
+  useEffect(() => theme.apply(),[]) 
   return (
     <>
       <Header>

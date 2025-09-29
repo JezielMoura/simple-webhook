@@ -49,11 +49,13 @@ export default function Home({ loaderData }: Route.ComponentProps) {
   return (
     <MainLayout>
       <Aside>
-        <nav className="p-5">
-          <button onClick={handleCreate} className="bg-[var(--primary)] text-white w-full p-2 rounded cursor-pointer" type="submit">Create Webhook</button>
-        </nav>
+        <p className="p-4 text-center">Select your wehbook, requests will be here</p>
       </Aside>
       <main className="flex flex-col px-5  max-[800px] col-start-1">
+        <div className="flex justify-between py-5">
+          <h1>Webhooks</h1>
+          <button onClick={handleCreate} className="bg-[var(--primary)] text-white px-4 text-sm py-2 rounded cursor-pointer" type="submit">Create Webhook</button>
+        </div>
         { loaderData.webhooks.map((webhook, i) => (
           <div key={i} className="flex justify-between items-center shadow mb-4 px-4 py-2 rounded">
             <Link to={`webhook/${webhook.id}`}>
