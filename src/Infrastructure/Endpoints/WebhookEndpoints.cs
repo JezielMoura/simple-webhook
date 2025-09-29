@@ -23,7 +23,7 @@ public static class WebhookEndpoints
         route.MapDelete("webhooks/{id:guid}", async (DeleteWebhookCommand command, Guid id, [FromHeader(Name = "Authorization")]string? secret) =>
             (await command.Execute(new DeleteWebhookRequest(id, secret))).Match<Results<Ok<bool>, BadRequest<Error>>>(data => TypedResults.Ok(data), error => TypedResults.BadRequest(error)));
             
-        route.MapMethods("{id:guid}", httpMethods, async (CreateRequestCommand command, Guid id) =>
-            TypedResults.Ok(await command.Execute(new CreateRequestRequest(id))));
+        route.MapMethods("{id:guid}", httpMethods, async (CreateRequestCommand command, Guid id, [FromHeader(Name = "Authorization")]string? secret) =>
+            (await command.Execute(new CreateRequestRequest(id, secret))).Match<Results<Ok<Guid>, UnauthorizedHttpResult>>(data => TypedResults.Ok(data), error => TypedResults.Unauthorized()));
     }
 }

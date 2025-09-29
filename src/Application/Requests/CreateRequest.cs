@@ -1,18 +1,27 @@
 using Microsoft.AspNetCore.Http;
 using SimpleWebhook.Domain.RequestAggregate;
+using SimpleWebhook.Domain.WebhookAggregate;
 
 namespace SimpleWebhook.Application.Requests;
 
-public sealed record CreateRequestRequest(Guid WebhookId);
+public sealed record CreateRequestRequest(Guid WebhookId, string? Secret);
 
-public sealed class CreateRequestCommand(IHttpContextAccessor accessor, IRequestRepository repository)
+public sealed class CreateRequestCommand(IHttpContextAccessor accessor, IRequestRepository repository, IWebhookRepository webhookRepository)
 {
     private readonly IHttpContextAccessor _accessor = accessor;
     private readonly IRequestRepository _repository = repository;
+    private readonly IWebhookRepository _webhookRepository = webhookRepository;
     private static JsonSerializerOptions _jsonOptions = new() { WriteIndented = true };
 
-    public async Task<Guid> Execute(CreateRequestRequest request)
+    public async Task<Result<Guid, Error>> Execute(CreateRequestRequest request)
     {
+        var webhook = await _webhookRepository.Find(request.WebhookId);
+
+        if (webhook is null || (!string.IsNullOrWhiteSpace(webhook.Secret) && request.Secret != webhook.Secret))
+        {
+            return new Error { Message = "Unauthorized" };
+        }
+
         var httpRequest = _accessor.HttpContext?.Request ?? throw new InvalidOperationException("Null HTTP request");
         var id = Guid.NewGuid();
         var body = await new StreamReader(httpRequest.Body).ReadToEndAsync();
