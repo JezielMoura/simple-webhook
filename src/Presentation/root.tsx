@@ -14,7 +14,7 @@ export function Layout({ children }: { children: React.ReactNode }) {
       <head>
         <meta charSet="utf-8" />
         <meta name="viewport" content="width=device-width, initial-scale=1" />
-        <link rel="shortcut icon" href="/logo.png" type="image/png" /> 
+        <link rel="shortcut icon" href="/icon.png" type="image/png" /> 
         <Meta />
         <Links />
       </head>
