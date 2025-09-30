@@ -1,0 +1,1 @@
+code ~/.microsoft/usersecrets/2006c4a9-6ac0-4ea0-a243-92aa724fcc9c/secrets.json

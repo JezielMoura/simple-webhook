@@ -19,6 +19,9 @@ spec:
         - name: webhook
           image: ghcr.io/jezielmoura/webhook:${GITHUB_SHA}
           imagePullPolicy: Always
+          envFrom:
+            - configMapRef:
+                name: webhook-config
           ports:
             - containerPort: 8080
               name: http
@@ -68,3 +71,14 @@ spec:
                 name:  webhook
                 port:
                   number: 8080
+---
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: webhook-config
+  namespace: apps
+  labels:
+    app: webhook
+data:
+  OTEL_EXPORTER_OTLP_ENDPOINT: "http://collector.monitoring:4318"
+  OTEL_EXPORTER_OTLP_PROTOCOL: "http/protobuf"

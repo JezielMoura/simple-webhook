@@ -7,10 +7,10 @@
   <ItemGroup Condition="$(MSBuildProjectName.EndsWith('Application')) or $(MSBuildProjectName.EndsWith('Infrastructure'))">
     <PackageReference Include="Npgsql.EntityFrameworkCore.PostgreSQL" Version="10.0.0-preview.7" />
     <PackageReference Include="OpenAI" Version="2.4.0" />
+    <PackageReference Include="OpenTelemetry" Version="1.12.0" />
   </ItemGroup>
 
   <ItemGroup Condition="$(MSBuildProjectName.EndsWith('Infrastructure'))">
-    <PackageReference Include="OpenTelemetry" Version="1.12.0" />
     <PackageReference Include="OpenTelemetry.Exporter.OpenTelemetryProtocol" Version="1.12.0" />
     <PackageReference Include="OpenTelemetry.Extensions.Hosting" Version="1.12.0" />
     <PackageReference Include="OpenTelemetry.Instrumentation.AspNetCore" Version="1.12.0" />

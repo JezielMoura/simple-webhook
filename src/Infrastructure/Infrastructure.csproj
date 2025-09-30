@@ -7,7 +7,7 @@
   <PropertyGroup>
     <RootNamespace>SimpleWebhook.Infrastructure</RootNamespace>
     <AssemblyName>SimpleWebhook.Infrastructure</AssemblyName>
-    <UserSecretsId>fde6f84c-643d-492f-b1f1-90a53da93b79</UserSecretsId>
+    <UserSecretsId>2006c4a9-6ac0-4ea0-a243-92aa724fcc9c</UserSecretsId>
   </PropertyGroup>
 
   <ItemGroup>

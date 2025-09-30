@@ -8,6 +8,7 @@ builder.Services.ConfigureCommands();
 builder.Services.AddHttpContextAccessor ();
 builder.Services.AddInMemoryRepositories();
 builder.Services.AddSingleton(_ => TimeProvider.System);
+builder.Services.ConfigureTelemetry(builder.Environment);
 builder.Services.AddOpenApi(options =>
 {
     options.AddDocumentTransformer((document, context, cancellationToken) =>

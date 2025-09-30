@@ -2,8 +2,6 @@
 
 @theme {
   --font-sans: "Inter", ui-sans-serif, system-ui, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
-  --color-primary-500: oklch(63.7% 0.237 25.331);
-  --color-secondary-300: #93c5fd;
 }
 
 :root {
@@ -67,13 +65,13 @@ main {
     grid-template: 4rem 1fr / 0px 1fr; 
 }
 
-@media (max-width: 768px) {
+@media (max-width: 769px) {
     header {
         grid-area: 1 / 1 / 2 / 3;
     }
 
     aside {
-        display: none; background: var(--background);
+        display: none; background: var(--color-bg);
     }
 
     main {

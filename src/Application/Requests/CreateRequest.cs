@@ -1,4 +1,6 @@
+using System.Diagnostics.Metrics;
 using Microsoft.AspNetCore.Http;
+using OpenTelemetry.Trace;
 using SimpleWebhook.Domain.RequestAggregate;
 using SimpleWebhook.Domain.WebhookAggregate;
 
@@ -6,11 +8,13 @@ namespace SimpleWebhook.Application.Requests;
 
 public sealed record CreateRequestRequest(Guid WebhookId, string? Secret);
 
-public sealed class CreateRequestCommand(IHttpContextAccessor accessor, IRequestRepository repository, IWebhookRepository webhookRepository)
+public sealed class CreateRequestCommand(IHttpContextAccessor accessor, IRequestRepository repository, IWebhookRepository webhookRepository, Tracer tracer, Meter meter)
 {
     private readonly IHttpContextAccessor _accessor = accessor;
     private readonly IRequestRepository _repository = repository;
     private readonly IWebhookRepository _webhookRepository = webhookRepository;
+    private readonly Tracer _tracer = tracer;
+    private readonly Counter<int> _counter = meter.CreateCounter<int>("webhook.requests");
     private static JsonSerializerOptions _jsonOptions = new() { WriteIndented = true };
 
     public async Task<Result<Guid, Error>> Execute(CreateRequestRequest request)
@@ -21,6 +25,11 @@ public sealed class CreateRequestCommand(IHttpContextAccessor accessor, IRequest
         {
             return new Error { Message = "Unauthorized" };
         }
+
+        _counter.Add(1, new KeyValuePair<string, object?>("url", webhook.Url));
+
+        var attributes = new List<KeyValuePair<string, object?>> { new ("url", webhook.Url)};
+        using var _ = _tracer.StartActiveSpan("Saving new request", initialAttributes: new SpanAttributes(attributes));
 
         var httpRequest = _accessor.HttpContext?.Request ?? throw new InvalidOperationException("Null HTTP request");
         var id = Guid.NewGuid();
