@@ -6,7 +6,7 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.ConfigureEntityFramework(builder.Configuration);
 builder.Services.ConfigureCommands();
 builder.Services.AddHttpContextAccessor ();
-builder.Services.AddInMemoryRepositories();
+builder.Services.AddPostgresRepositories();
 builder.Services.AddSingleton(_ => TimeProvider.System);
 builder.Services.ConfigureTelemetry(builder.Environment);
 builder.Services.AddOpenApi(options =>

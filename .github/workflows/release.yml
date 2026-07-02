@@ -50,21 +50,3 @@ jobs:
         tags: ghcr.io/jezielmoura/webhook:${{ github.sha }}
         context: .
         push: true
-
-    - name: Set up Kubectl
-      uses: azure/k8s-set-context@v4
-      with:
-        method: kubeconfig
-        kubeconfig: ${{ secrets.KUBECONFIG }}
-
-    - name: set image sha
-      run: envsubst < deployment.yaml > deployment-updated.yaml
-      env:
-        GITHUB_SHA: ${{ github.sha }}
-
-    - name: deploy
-      run: kubectl apply -f deployment-updated.yaml
-
-    - name: restart
-      run: |
-        kubectl rollout restart deployment webhook -n apps

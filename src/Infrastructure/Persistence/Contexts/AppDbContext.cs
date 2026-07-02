@@ -1,9 +1,14 @@
+using SimpleWebhook.Domain.RequestAggregate;
+using SimpleWebhook.Domain.WebhookAggregate;
 
 namespace SimpleWebhook.Infrastructure.Persistence.Contexts;
 
 public sealed class AppDbContext(IConfiguration configuration) : DbContext, IAppDbContext, IUnitOfWork
 {
     private readonly IConfiguration _configuration = configuration;
+
+    public DbSet<Webhook> Webhooks => Set<Webhook>();
+    public DbSet<Request> Requests => Set<Request>();
 
 
     public async Task<bool> Commit(CancellationToken cancellationToken = default)
@@ -19,9 +24,12 @@ public sealed class AppDbContext(IConfiguration configuration) : DbContext, IApp
 
     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
     {
-        var connectionString = _configuration["POSTGRES"];
+        string? connectionString = _configuration["POSTGRES"];
         optionsBuilder.LogTo(Console.WriteLine, LogLevel.Information);
-        optionsBuilder.UseNpgsql(connectionString ?? throw new ArgumentException("Missing connection string"));
+        optionsBuilder.UseNpgsql(connectionString ?? throw new ArgumentException("Missing connection string"), options =>
+        {
+            options.ConfigureDataSource(x => x.EnableDynamicJson());
+        });
         base.OnConfiguring(optionsBuilder);
     }
 }

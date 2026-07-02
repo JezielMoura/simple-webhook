@@ -22,10 +22,10 @@ public static class ServiceCollectionExtensions
         services.AddScoped<IAppDbContext>(sp => sp.GetRequiredService<AppDbContext>());
     }
 
-    public static void AddInMemoryRepositories(this IServiceCollection services)
+    public static void AddPostgresRepositories(this IServiceCollection services)
     {
-        services.AddSingleton<IWebhookRepository, InMemoryWebhookRepository>();
-        services.AddSingleton<IRequestRepository, InMemoryRequestRepository>();
+        services.AddScoped<IWebhookRepository, EfWebhookRepository>();
+        services.AddScoped<IRequestRepository, EfRequestRepository>();
     }
 
     public static void ConfigureCommands(this IServiceCollection services)
