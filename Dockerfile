@@ -1,7 +1,7 @@
 FROM mcr.microsoft.com/dotnet/sdk:10.0-alpine AS dotnet-build
 WORKDIR /dotnet-build
 COPY . /dotnet-build
-RUN dotnet publish -c Release -o api src/Infrastructure
+RUN dotnet publish src/Infrastructure -c Release -o api
 
 FROM node:22-alpine AS node-build
 WORKDIR /node-build
